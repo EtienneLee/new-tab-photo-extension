@@ -1,47 +1,68 @@
+/// <reference types="vite/client" />
 import '@src/NewTab.css';
-import '@src/NewTab.scss';
-import { useStorageSuspense, withErrorBoundary, withSuspense } from '@chrome-extension-boilerplate/shared';
-import { exampleThemeStorage } from '@chrome-extension-boilerplate/storage';
-import { ComponentPropsWithoutRef } from 'react';
+// import { ImageModule } from './types'; // We'll create this type
+import React, { useState, useEffect } from 'react';
+import { withErrorBoundary, withSuspense } from '@chrome-extension-boilerplate/shared';
 
-const NewTab = () => {
-  const theme = useStorageSuspense(exampleThemeStorage);
+const imageFiles: Record<string, string> = import.meta.glob('./assets/*', {
+  eager: true,
+  as: 'url',
+});
+
+const photos: string[] = Object.entries(imageFiles)
+  .filter(([path]) => /\.(jpe?g|png)$/i.test(path))
+  .map(([, url]) => url);
+
+console.log('Photos:', photos);
+
+const NewTab: React.FC = () => {
+  const [currentPhoto, setCurrentPhoto] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  const getRandomPhoto = () => {
+    const randomIndex = Math.floor(Math.random() * photos.length);
+    return photos[randomIndex];
+  };
+
+  const changePhoto = () => {
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setCurrentPhoto(getRandomPhoto());
+      setIsTransitioning(false);
+    }, 500); // This should match the transition duration in CSS
+  };
+
+  useEffect(() => {
+    setCurrentPhoto(getRandomPhoto());
+  }, []);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      window.location.href = `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`;
+    }
+  };
 
   return (
-    <div className="App" style={{ backgroundColor: theme === 'light' ? '#eee' : '#222' }}>
-      <header className="App-header" style={{ color: theme === 'light' ? '#222' : '#eee' }}>
-        <img src={chrome.runtime.getURL('new-tab/logo.svg')} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>pages/new-tab/src/NewTab.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ color: theme === 'light' ? '#0281dc' : undefined, marginBottom: '10px' }}>
-          Learn React
-        </a>
-        <h6>The color of this paragraph is defined using SASS.</h6>
-        <ToggleButton>Toggle theme</ToggleButton>
-      </header>
+    <div className="new-tab-container">
+      <img src={currentPhoto} alt="Random" className={`photo-display ${isTransitioning ? 'fade-out' : ''}`} />
+      <button onClick={changePhoto} className="change-photo-button">
+        Change Photo
+      </button>
+      <form onSubmit={handleSearch} className="search-form">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={e => setSearchQuery(e.target.value)}
+          placeholder="Search Google"
+          className="search-input"
+        />
+        <button type="submit" className="search-button">
+          Search
+        </button>
+      </form>
     </div>
-  );
-};
-
-const ToggleButton = (props: ComponentPropsWithoutRef<'button'>) => {
-  const theme = useStorageSuspense(exampleThemeStorage);
-  return (
-    <button
-      className={
-        props.className +
-        ' ' +
-        'font-bold mt-4 py-1 px-4 rounded shadow hover:scale-105 ' +
-        (theme === 'light' ? 'bg-white text-black' : 'bg-black text-white')
-      }
-      onClick={exampleThemeStorage.toggle}>
-      {props.children}
-    </button>
   );
 };
 
