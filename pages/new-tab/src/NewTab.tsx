@@ -1,19 +1,18 @@
 /// <reference types="vite/client" />
 import '@src/NewTab.css';
-// import { ImageModule } from './types'; // We'll create this type
 import React, { useState, useEffect } from 'react';
 import { withErrorBoundary, withSuspense } from '@chrome-extension-boilerplate/shared';
 
+// Import Image files from assets folder
 const imageFiles: Record<string, string> = import.meta.glob('./assets/*', {
   eager: true,
   as: 'url',
 });
 
+// Obtain Photo array from image files
 const photos: string[] = Object.entries(imageFiles)
   .filter(([path]) => /\.(jpe?g|png)$/i.test(path))
   .map(([, url]) => url);
-
-console.log('Photos:', photos);
 
 const NewTab: React.FC = () => {
   const [currentPhoto, setCurrentPhoto] = useState('');
