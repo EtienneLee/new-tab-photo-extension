@@ -2,6 +2,8 @@
 import { useEffect, useState } from 'react';
 import { StoredPhoto } from './types';
 import { AddPhotoButton } from './AddPhotoButton';
+import { DeletePhotoButton } from './DeletePhotoButton';
+import { DeleteAllButton } from './DeleteAllButton';
 import styles from './Options.module.css';
 
 export const Options = () => {
@@ -34,7 +36,11 @@ export const Options = () => {
       <div className={styles.statsBar}>
         <span>Total Photos: {photos.length}</span>
       </div>
-      <AddPhotoButton />
+
+      <div className={styles.actionButtons}>
+        <AddPhotoButton />
+        <DeleteAllButton onDeleteSuccess={loadPhotos} />
+      </div>
 
       <div className={styles.photoGrid}>
         {photos.length === 0 ? (
@@ -43,7 +49,10 @@ export const Options = () => {
           photos.map(photo => (
             <div key={photo.id} className={styles.photoCard}>
               <img src={photo.dataUrl} alt={photo.name} />
-              <p className={styles.photoName}>{photo.name}</p>
+              <div className={styles.photoCardFooter}>
+                <p className={styles.photoName}>{photo.name}</p>
+                <DeletePhotoButton photoId={photo.id} onDeleteSuccess={loadPhotos} />
+              </div>
             </div>
           ))
         )}
