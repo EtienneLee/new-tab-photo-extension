@@ -206,6 +206,22 @@ importers:
         specifier: workspace:*
         version: link:../../packages/tsconfig
 
+  pages/content-ui:
+    dependencies:
+      '@chrome-extension-boilerplate/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
+    devDependencies:
+      '@chrome-extension-boilerplate/hmr':
+        specifier: workspace:*
+        version: link:../../packages/hmr
+      '@chrome-extension-boilerplate/tailwindcss-config':
+        specifier: workspace:*
+        version: link:../../packages/tailwind-config
+      '@chrome-extension-boilerplate/tsconfig':
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
+
   pages/devtools:
     dependencies:
       '@chrome-extension-boilerplate/shared':
