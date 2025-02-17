@@ -1,0 +1,29 @@
+/* DeleteAllButton.module.css */
+.deleteContainer {
+  margin: 20px 0;
+}
+
+.deleteButton {
+  background-color: #dc2626; /* Tailwind's red-600 */
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.deleteButton:hover {
+  background-color: #b91c1c; /* Tailwind's red-700 */
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.deleteButton:active {
+  transform: translateY(0);
+}

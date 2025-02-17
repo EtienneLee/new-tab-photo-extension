@@ -1,28 +1,36 @@
 /// <reference types="vite/client" />
 import '@src/NewTab.css';
-// import { ImageModule } from './types'; // We'll create this type
 import React, { useState, useEffect } from 'react';
 import { withErrorBoundary, withSuspense } from '@chrome-extension-boilerplate/shared';
-
-const imageFiles: Record<string, string> = import.meta.glob('./assets/*', {
-  eager: true,
-  as: 'url',
-});
-
-const photos: string[] = Object.entries(imageFiles)
-  .filter(([path]) => /\.(jpe?g|png)$/i.test(path))
-  .map(([, url]) => url);
-
-console.log('Photos:', photos);
+import { StoredPhoto } from '../../options/src/types';
 
 const NewTab: React.FC = () => {
-  const [currentPhoto, setCurrentPhoto] = useState('');
+  const [storedPhotos, setStoredPhotos] = useState<StoredPhoto[]>([]);
+  const [currentPhoto, setCurrentPhoto] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
   const [isTransitioning, setIsTransitioning] = useState(false);
 
+  useEffect(() => {
+    // Load photos from storage on mount
+    const loadPhotos = async () => {
+      const result = await chrome.storage.local.get(['photos']);
+      const photos = result.photos || [];
+      setStoredPhotos(photos);
+
+      if (photos.length > 0) {
+        // Select random initial photo
+        const randomPhoto = photos[Math.floor(Math.random() * photos.length)];
+        setCurrentPhoto(randomPhoto.dataUrl);
+      }
+    };
+
+    loadPhotos();
+  }, []);
+
   const getRandomPhoto = () => {
-    const randomIndex = Math.floor(Math.random() * photos.length);
-    return photos[randomIndex];
+    if (storedPhotos.length === 0) return '';
+    const randomIndex = Math.floor(Math.random() * storedPhotos.length);
+    return storedPhotos[randomIndex].dataUrl;
   };
 
   const changePhoto = () => {
@@ -30,12 +38,8 @@ const NewTab: React.FC = () => {
     setTimeout(() => {
       setCurrentPhoto(getRandomPhoto());
       setIsTransitioning(false);
-    }, 500); // This should match the transition duration in CSS
+    }, 500);
   };
-
-  useEffect(() => {
-    setCurrentPhoto(getRandomPhoto());
-  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,10 +50,18 @@ const NewTab: React.FC = () => {
 
   return (
     <div className="new-tab-container">
-      <img src={currentPhoto} alt="Random" className={`photo-display ${isTransitioning ? 'fade-out' : ''}`} />
-      <button onClick={changePhoto} className="change-photo-button">
-        Change Photo
-      </button>
+      {storedPhotos.length > 0 ? (
+        <img src={currentPhoto} alt="Random" className={`photo-display ${isTransitioning ? 'fade-out' : ''}`} />
+      ) : (
+        <div className="no-photos-message">No photos available. Add some photos in the extension!</div>
+      )}
+
+      {storedPhotos.length > 0 && (
+        <button onClick={changePhoto} className="change-photo-button">
+          Change Photo
+        </button>
+      )}
+
       <form onSubmit={handleSearch} className="search-form">
         <input
           type="text"
@@ -66,4 +78,4 @@ const NewTab: React.FC = () => {
   );
 };
 
-export default withErrorBoundary(withSuspense(NewTab, <div> Loading ... </div>), <div> Error Occur </div>);
+export default withErrorBoundary(withSuspense(NewTab, <div>Loading...</div>), <div>Error Occur</div>);
