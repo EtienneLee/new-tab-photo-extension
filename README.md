@@ -1,3 +1,5 @@
+Photo Extension I created for Iris in Summer 2024
+=======
 # Iris Photo Extension
 
 Used Chrome Extension Boilerplate by Jonghakseo: https://github.com/Jonghakseo/chrome-extension-boilerplate-react-vite
