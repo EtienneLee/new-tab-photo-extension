@@ -1,0 +1,78 @@
+/* Options.module.css */
+.optionsContainer {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.title {
+  color: #111827;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.photoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 24px;
+  padding: 20px 0;
+}
+
+.photoCard {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  transition: transform 0.2s ease;
+}
+
+.photoCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.photoCard img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.photoName {
+  padding: 12px;
+  font-size: 14px;
+  color: #374151;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.noPhotos {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #6b7280;
+  font-size: 16px;
+  padding: 40px;
+}
+
+.statsBar {
+  background-color: #f3f4f6;
+  padding: 8px 16px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: #374151;
+}
+
+.photoCardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+}
