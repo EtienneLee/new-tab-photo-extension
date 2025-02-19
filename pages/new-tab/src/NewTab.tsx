@@ -74,7 +74,9 @@ const NewTab: React.FC = () => {
         </>
       ) : (
         <>
-          <div className="no-photos-message">No photos added yet. Add some photos in the extensions option page.</div>
+          <div className="no-photos-message">
+            No photos added yet. Click the extension icon and head to options to add your favorites.
+          </div>
           <form onSubmit={handleSearch} className="search-form">
             <input
               type="text"
