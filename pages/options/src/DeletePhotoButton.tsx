@@ -1,16 +1,14 @@
 import React from 'react';
-import { BiTrash } from 'react-icons/bi'; // Trash icon
+import { BiTrash } from 'react-icons/bi';
 import { StoredPhoto } from './types';
 
 interface DeletePhotoButtonProps {
-  // Props from parent
   photoId: string;
   onDeleteSuccess?: () => void; // Callback for parent component
 }
 
 export const DeletePhotoButton: React.FC<DeletePhotoButtonProps> = ({ photoId, onDeleteSuccess }) => {
   const handleDelete = async () => {
-    // Show confirmation dialog
     const confirmed = window.confirm('Are you sure you want to delete this photo?');
 
     if (!confirmed) return;
@@ -32,7 +30,6 @@ export const DeletePhotoButton: React.FC<DeletePhotoButtonProps> = ({ photoId, o
         onDeleteSuccess();
       }
     } catch (error) {
-      // Error message on failure
       console.error('Error deleting photo:', error);
     }
   };

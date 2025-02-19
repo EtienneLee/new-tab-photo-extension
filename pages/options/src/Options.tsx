@@ -18,14 +18,12 @@ export const Options = () => {
 
   const loadPhotos = () => {
     chrome.storage.local.get(['photos'], result => {
-      console.log('Loaded photos count:', result.photos?.length || 0); // Debugging log
       setPhotos(result.photos || []);
     });
   };
 
   const handleStorageChange = (changes: { [key: string]: chrome.storage.StorageChange }) => {
     if (changes.photos) {
-      console.log('Storage changed. New photo count:', changes.photos.newValue?.length || 0); // Debugging log 2
       setPhotos(changes.photos.newValue || []);
     }
   };
