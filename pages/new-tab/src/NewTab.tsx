@@ -9,6 +9,7 @@ const NewTab: React.FC = () => {
   const [currentPhoto, setCurrentPhoto] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Load photos from storage on mount
@@ -22,6 +23,8 @@ const NewTab: React.FC = () => {
         const randomPhoto = photos[Math.floor(Math.random() * photos.length)];
         setCurrentPhoto(randomPhoto.dataUrl);
       }
+
+      setIsLoading(false); // Disable the fade in transitions after photos loaded
     };
 
     loadPhotos();
@@ -49,31 +52,43 @@ const NewTab: React.FC = () => {
   };
 
   return (
-    <div className="new-tab-container">
+    <div className="new-tab-container" style={{ opacity: isLoading ? 0 : 1, transition: 'opacity 0.3s' }}>
       {storedPhotos.length > 0 ? (
-        <img src={currentPhoto} alt="Random" className={`photo-display ${isTransitioning ? 'fade-out' : ''}`} />
+        <>
+          <img src={currentPhoto} alt="Random" className={`photo-display ${isTransitioning ? 'fade-out' : ''}`} />
+          <button onClick={changePhoto} className="change-photo-button">
+            Change Photo
+          </button>
+          <form onSubmit={handleSearch} className="search-form">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              placeholder="Search Google"
+              className="search-input"
+            />
+            <button type="submit" className="search-button">
+              Search
+            </button>
+          </form>
+        </>
       ) : (
-        <div className="no-photos-message">No photos available. Add some photos in the extension!</div>
+        <>
+          <div className="no-photos-message">No photos added yet. Add some photos in the extensions option page.</div>
+          <form onSubmit={handleSearch} className="search-form">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              placeholder="Search Google"
+              className="search-input"
+            />
+            <button type="submit" className="search-button">
+              Search
+            </button>
+          </form>
+        </>
       )}
-
-      {storedPhotos.length > 0 && (
-        <button onClick={changePhoto} className="change-photo-button">
-          Change Photo
-        </button>
-      )}
-
-      <form onSubmit={handleSearch} className="search-form">
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={e => setSearchQuery(e.target.value)}
-          placeholder="Search Google"
-          className="search-input"
-        />
-        <button type="submit" className="search-button">
-          Search
-        </button>
-      </form>
     </div>
   );
 };
