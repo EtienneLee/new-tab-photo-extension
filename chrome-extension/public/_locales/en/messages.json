@@ -1,10 +1,10 @@
 {
   "extensionDescription": {
     "description": "Extension description",
-    "message": "Chrome extension made by Etienne"
+    "message": "Display photos from your personal gallery on every new tab"
   },
   "extensionName": {
     "description": "Extension name",
-    "message": "Extension for Iris"
+    "message": "Iris - Personal New Tab Photos"
   }
 }
