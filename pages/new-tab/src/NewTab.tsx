@@ -7,7 +7,6 @@ import { StoredPhoto } from '../../options/src/types';
 const NewTab: React.FC = () => {
   const [storedPhotos, setStoredPhotos] = useState<StoredPhoto[]>([]);
   const [currentPhoto, setCurrentPhoto] = useState<string>('');
-  const [searchQuery, setSearchQuery] = useState('');
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -44,13 +43,6 @@ const NewTab: React.FC = () => {
     }, 500);
   };
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      window.location.href = `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`;
-    }
-  };
-
   return (
     <div className="new-tab-container" style={{ opacity: isLoading ? 0 : 1, transition: 'opacity 0.3s' }}>
       {storedPhotos.length > 0 ? (
@@ -59,36 +51,12 @@ const NewTab: React.FC = () => {
           <button onClick={changePhoto} className="change-photo-button">
             Change Photo
           </button>
-          <form onSubmit={handleSearch} className="search-form">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              placeholder="Search Google"
-              className="search-input"
-            />
-            <button type="submit" className="search-button">
-              Search
-            </button>
-          </form>
         </>
       ) : (
         <>
           <div className="no-photos-message">
             No photos added yet. Click the extension icon and head to options to add your favorites.
           </div>
-          <form onSubmit={handleSearch} className="search-form">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              placeholder="Search Google"
-              className="search-input"
-            />
-            <button type="submit" className="search-button">
-              Search
-            </button>
-          </form>
         </>
       )}
     </div>
