@@ -46,8 +46,13 @@ const NewTab: React.FC = () => {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Search using chrome search API opening on current tab like normal search
     if (searchQuery.trim()) {
-      window.location.href = `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`;
+      chrome.search.query({
+        text: searchQuery,
+        disposition: 'CURRENT_TAB',
+      });
     }
   };
 
