@@ -1,5 +1,7 @@
 # New Tab Photo Extension
 
+Video demo: https://www.youtube.com/watch?v=OuDFRR0cUDQ
+
 Used Chrome Extension Boilerplate by Jonghakseo: https://github.com/Jonghakseo/chrome-extension-boilerplate-react-vite
 
 ## How to Run This on Your Device
