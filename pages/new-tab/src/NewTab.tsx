@@ -69,7 +69,6 @@ const NewTab: React.FC = () => {
               type="text"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              placeholder="Search Google"
               className="search-input"
             />
             <button type="submit" className="search-button">
@@ -87,7 +86,6 @@ const NewTab: React.FC = () => {
               type="text"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              placeholder="Search Google"
               className="search-input"
             />
             <button type="submit" className="search-button">
